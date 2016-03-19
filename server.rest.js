@@ -1,12 +1,11 @@
 var restify = require('restify');
-var jwt    = require('jsonwebtoken');
 var User = require('./app/model/User');
 var config = require('./config');
 var mongoose = require('mongoose');
 var validator = require('validator');
 var crypto = require('crypto');
 var md5 = crypto.createHash('md5');
-
+var authorization = require('.app/Authorization');
 var ObjectId = mongoose.Types.ObjectId;
 mongoose.connect(config.database);
 
@@ -29,25 +28,8 @@ server.post('/login', UserRoute.login);
 server.post('/register',UserRoute.register);
 
 server.get('/articles',ArticleRoute.getArticles);
-//authorization
-server.use(function(req, res, next){
-  console.log(req.authorization);
-  var token = req.params.token || req.headers.token;
-  if(token){
-    jwt.verify(token, config.secret, function(err, decoded) {
-      if (err) {
-        res.send(401,{ success: false, message: 'Failed to authenticate token.' });
-      } else {
-        // if everything is good, save to request for use in other routes
-        decoded.id = ObjectId(decoded.id);
-        req.decoded = decoded;
-        next();
-      }
-    });
-  }else{
-    res.send(new restify.errors.ForbiddenError('no token'));
-  }
-});
+//need authorization
+server.use(authorization);
 //------------need auth----------------//
 server.get('/users',UserRoute.users);
 

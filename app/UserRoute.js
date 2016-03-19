@@ -1,4 +1,4 @@
-var User = require('./model/User');
+var User = require('./model/waterline/User');
 var config = require('../config');
 var restify = require('restify');
 var validator = require('validator');
@@ -16,12 +16,11 @@ var UserRoute = {
       return next( new restify.InvalidArgumentError('error email address'))
     }
     var md5 = crypto.createHash('md5');
-    md5.update(req.params.password)
-    var user = new User({
+    md5.update(req.params.password);
+    user.create({
       email : req.params.email,
       password : md5.digest('hex')
-    });
-    user.save(function(err){
+    }).exec(function(err,user){
       if(err) {
         console.log(err)
         return next(new restify.errors.InternalServerError('error in database'));
@@ -31,6 +30,7 @@ var UserRoute = {
         success:true,
       })
     });
+
   },
 
   login : function ( req, res, next) {
@@ -76,7 +76,7 @@ var UserRoute = {
   },
 
   logout : function (req, res, next) {
-    
+
   },
   users : function (req, res, next) {
     console.log(req.decoded);
