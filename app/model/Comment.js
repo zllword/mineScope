@@ -3,6 +3,8 @@ var mongoose     = require('mongoose');
 var Schema       = mongoose.Schema;
 
 var CommentSchema   = new Schema({
+    post: { type: Schema.Types.ObjectId },
+    type: { type: String, enum:['Article','Link','Product']},
     title : String,
     cover : String,
     images : [String],
@@ -10,8 +12,8 @@ var CommentSchema   = new Schema({
     content: String,
     buyLink : String,
     postDate : Date,
-    
-    posterID : Schema.Types.ObjectId,
+
+    posterID : {type: Schema.Types.ObjectId, ref: 'User'},
     posterName : String,
     posterAvatar : String,
 

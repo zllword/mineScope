@@ -3,12 +3,12 @@ var mongoose     = require('mongoose');
 var Schema       = mongoose.Schema;
 
 var FavoriteSchema   = new Schema({
-    
-    userID : Schema.Types.ObjectId,
+
+    userID : {type: Schema.Types.ObjectId, ref: 'User'},
     userName : String,
     userAvatar : String,
 
-    articleID : Schema.Types.ObjectId,
+    articleID : {type: Schema.Types.ObjectId, ref: 'Article' },
     articleTitle : String,
     articleCover : String
 });

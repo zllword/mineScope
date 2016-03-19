@@ -28,8 +28,7 @@ var ArticleRoute = {
       type : type,
       content: content,
       postDate : new Date(),
-      authorID : user.id,
-      authorName : user.name,
+      owner : user.id,
     });
     article.save(function(err){
       if(err) {
@@ -100,7 +99,7 @@ var ArticleRoute = {
         if(err)
           return next(new restify.errors.InternalServerError('db error when try to find by ID'));
         if(docs && docs.length > 0){
-          return next(new restify.errors.TooManyRequestsError('you have liked it.'));   
+          return next(new restify.errors.TooManyRequestsError('you have liked it.'));
         }
         var favorite = new Favorite({
           userID : user.id,
@@ -148,7 +147,7 @@ var ArticleRoute = {
       }else {
         return next(new restify.errors.PreconditionFailedError('you never like it'));
       }
-      
+
     });
   }
 }

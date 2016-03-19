@@ -9,14 +9,14 @@ var ArticleSchema   = new Schema({
     content: String,
     postDate : Date,
     updateDate : Date,
-    
-    authorID : Schema.Types.ObjectId,
+
+    authorID : {type: Schema.Types.ObjectId,ref: 'User'},
     authorName : String,
     authorAvatar : String,
 
     viewCount : Number,
     likeCount : Number,
-    likeMembers : [Schema.Types.ObjectId],
+    likeMembers : [{type: Schema.Types.ObjectId, ref: 'User'}],
     scopeScore : Number,
 });
 

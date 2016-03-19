@@ -29,6 +29,7 @@ server.post('/login', UserRoute.login);
 server.post('/register',UserRoute.register);
 
 server.get('/articles',ArticleRoute.getArticles);
+server.get('/links',LinkRoute.getLinks);
 //authorization
 server.use(function(req, res, next){
   console.log(req.authorization);
