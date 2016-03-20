@@ -28,7 +28,8 @@ var ArticleRoute = {
       type : type,
       content: content,
       postDate : new Date(),
-      owner : user.id,
+      authorID : user.id,
+      authorName : user.name,
     });
     article.save(function(err){
       if(err) {
@@ -50,7 +51,7 @@ var ArticleRoute = {
       if(!article) {
         return next(new restify.errors.PreconditionFailedError('no this article'));
       }
-      if(article.authorID != user.id || user.privilege['updateArticle']) {
+      if(article.authorID.toString() != user.id.toString() && !user.privilege['updateArticle']) {
         return next(new restify.errors.PreconditionFailedError('no previlege to update article'));
       }
       article.title = title;
@@ -73,7 +74,7 @@ var ArticleRoute = {
         return next(new restify.errors.InternalServerError('db error when try to find by ID'));
       if(article)
         return next(new restify.errors.PreconditionFailedError('no this article'));
-      if(article.authorID != user._id || user.privilege['updateArticle']) {
+      if(article.authorID.toString() != user._id.toString() || user.privilege['updateArticle']) {
         return next(new restify.errors.PreconditionFailedError('no previlege to update article'));
       }
       article.remove(function(err){

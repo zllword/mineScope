@@ -22,6 +22,11 @@ var server = restify.createServer({
 server.use(restify.acceptParser(server.acceptable));
 server.use(restify.queryParser());
 server.use(restify.bodyParser());
+server.use(restify.CORS({
+    origins: ['http://localhost:3001'],   // defaults to ['*']
+    credentials: true,                 // defaults to false
+    headers: ['authorization-token']                 // sets expose-headers
+}));
 
 server.use(restify.authorizationParser());
 
@@ -30,6 +35,7 @@ server.post('/register',UserRoute.register);
 
 server.get('/articles',ArticleRoute.getArticles);
 server.get('/links',LinkRoute.getLinks);
+server.get('/products',ProductRoute.getProducts);
 //authorization
 server.use(function(req, res, next){
   console.log(req.authorization);
@@ -60,7 +66,6 @@ server.put('/articles/:articleID/like',ArticleRoute.likeArticle);
 server.put('/articles/:articleID/unlike',ArticleRoute.unlikeArticle);
 
 //product
-server.get('/products',ProductRoute.getProducts);
 server.post('/products',ProductRoute.addProduct);
 server.put('/products/:productID',ProductRoute.updateProduct);
 server.del('products/:productID',ProductRoute.deleteProduct);

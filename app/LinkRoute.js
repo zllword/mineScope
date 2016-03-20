@@ -37,7 +37,6 @@ var LinkRoute = {
     var url = req.params.url;
     var id = req.params.linkID;
     var user = req.decoded;
-    console.log(user);
     Link.findById(id,function(err,link){
       if(err) {
         return next(new restify.errors.InternalServerError('db error when try to find by ID'));
@@ -45,7 +44,7 @@ var LinkRoute = {
       if(!link) {
         return next(new restify.errors.PreconditionFailedError('no this article'));
       }
-      if(link.owner != user.id || user.privilege['updateLink']) {
+      if(link.owner.toString() != user.id.toString() && !user.privilege['updateLink']) {
         return next(new restify.errors.PreconditionFailedError('no previlege to update link'));
       }
       link.title = title;
@@ -67,6 +66,9 @@ var LinkRoute = {
         return next(new restify.errors.InternalServerError('db error when try to find by ID'));
       if(!link)
         return next(new restify.errors.PreconditionFailedError('no this link'));
+      if(link.owner.toString() != user.id.toString() && !user.privilege['updateLink']) {
+        return next(new restify.errors.PreconditionFailedError('no previlege to delete link'));
+      }
       link.remove(function(err){
         if(err)
           return next(new restify.errors.InternalServerError('db error when try to delete link'));
