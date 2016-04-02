@@ -12,9 +12,11 @@ mongoose.connect(config.database);
 
 var UserRoute = require('./app/UserRoute');
 var ArticleRoute = require('./app/ArticleRoute');
+var VideoRoute = require('./app/VideoRoute');
 var ProductRoute = require('./app/ProductRoute');
 var LinkRoute = require('./app/LinkRoute');
 var BoardRoute = require('./app/BoardRoute');
+var CommentRoute = require('./app/CommentRoute');
 
 var server = restify.createServer({
   name: 'mineScope',
@@ -40,10 +42,11 @@ server.post('/login', UserRoute.login);
 server.post('/register',UserRoute.register);
 
 server.get('/articles',ArticleRoute.getArticles);
-server.get('/links',LinkRoute.getLinks);
+server.get('/videos',VideoRoute.getVideos);
 server.get('/products',ProductRoute.getProducts);
 server.get('/boards',BoardRoute.getBoards);
 server.get('/boards/:boardID',BoardRoute.getBoardDetail);
+server.get('/comments/:boardID',CommentRoute.getComments);
 //authorization
 server.use(function(req, res, next){
   console.log(req.authorization);
@@ -73,6 +76,13 @@ server.del('/articles/:articleID',ArticleRoute.deleteArticle);
 server.put('/articles/:articleID/like',ArticleRoute.likeArticle);
 server.put('/articles/:articleID/unlike',ArticleRoute.unlikeArticle);
 
+//videos
+server.post('/videos',VideoRoute.addVideo);
+server.put('/videos/:videoID',VideoRoute.updateVideo);
+server.del('/videos/:videoID',VideoRoute.deleteVideo);
+server.put('/videos/:videoID/like',VideoRoute.likeVideo);
+server.put('/videos/:videoID/unlike',VideoRoute.unlikeVideo);
+
 //product
 server.post('/products',ProductRoute.addProduct);
 server.put('/products/:productID',ProductRoute.updateProduct);
@@ -92,6 +102,13 @@ server.get('/links',LinkRoute.getLinks);
 server.post('/links',LinkRoute.addLink);
 server.put('/links/:linkID',LinkRoute.updateLink);
 server.del('/links/:linkID',LinkRoute.deleteLink);
+
+//comments
+server.post('/comments',CommentRoute.addComment);
+server.put('/comments/:commentID',CommentRoute.updateComment);
+server.del('/comments/:commentID',CommentRoute.deleteComment);
+server.put('/comments/:commentID/like',CommentRoute.likeComment);
+server.put('/comments/:commentID/unlike',CommentRoute.unlikeComment);
 
 server.on('InternalServer', function (req, res, err, cb) {
   err.body = 'something is wrong!';

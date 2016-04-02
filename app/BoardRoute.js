@@ -4,6 +4,7 @@ var restify = require('restify');
 var Board = require('./model/Board');
 var Video = require('./model/Video');
 var Article = require('./model/Article');
+var Music = require('./model/Music');
 var Favorite = require('./model/Favorite');
 var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
@@ -17,6 +18,9 @@ var BoardRoute = {
     }
     Board.findById(id)
       .populate('articles')
+      .populate('videos')
+      .populate('musics')
+      .populate('owner')
       .exec(function(error, board){
         if(error) {
           return next(new restify.errors.InternalServerError('db error when try to find by ID'));
@@ -38,7 +42,6 @@ var BoardRoute = {
       var type = req.params.type;
       var objID = req.params.oid;
       var user = req.decoded;
-
       if (!id || !type || !objID) {
         return next(new restify.errors.InvalidArgumentError('params can not be null'))
       }
@@ -66,8 +69,8 @@ var BoardRoute = {
               return next(new restify.errors.PreconditionFailedError('no this video'));
             }
             //判断是否存在
-            var exsit = _.find(board.articles,function(a){
-              return a.toString() == article._id.toString();
+            var exsit = _.find(board.videos,function(a){
+              return a.toString() == video._id.toString();
             });
             if (exsit) {
               res.send(202,{success:false,message:'aleady in the board'});

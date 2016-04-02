@@ -7,4 +7,6 @@ module.exports = {
     MAX_USER_COUNT : 10,
     // 看板的最大对象数量
     MAX_OBJ_COUNT : 12,
+    // 显示在board中的评论数量
+    MAX_COMMENT_COUNT : 6,
 };

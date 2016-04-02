@@ -2,6 +2,7 @@ var config = require('../config');
 var restify = require('restify');
 var Video = require('./model/Video');
 var Favorite = require('./model/Favorite');
+var _ = require('lodash');
 
 var VideoRoute = {
   getVideos : function(req, res, next) {
@@ -26,6 +27,7 @@ var VideoRoute = {
     var video = new Video({
       title : title,
       poster : poster,
+      description : description,
       type : type,
       storage : storage,
       viewCount : 0,
@@ -43,7 +45,9 @@ var VideoRoute = {
     var title = req.params.title;
     var description = req.params.description;
     var poster = req.params.poster;
+    var storage = req.params.storage;
     var id = req.params.videoID;
+
     var user = req.decoded;
     console.log(user);
     Video.findById(id,function(err,video){
@@ -58,6 +62,7 @@ var VideoRoute = {
       }
       video.title = title;
       video.description = description;
+      video.storage = storage;
       video.poster = poster;
       video.updateDate = new Date();
       video.save(function(err){
@@ -70,14 +75,14 @@ var VideoRoute = {
   },
 
   deleteVideo : function(req, res, next) {
-    var id = req.params.id;
+    var id = req.params.videoID;
     var user = req.decoded;
     Video.findById(id,function(err,video){
       if(err)
         return next(new restify.errors.InternalServerError('db error when try to find by ID'));
       if(!video)
         return next(new restify.errors.PreconditionFailedError('no this video'));
-      if(video.owner.toString() != user._id.toString() || user.privilege['deleteVideo']) {
+      if(video.owner.toString() != user.id.toString() || user.privilege['deleteVideo']) {
         return next(new restify.errors.PreconditionFailedError('no previlege to update article'));
       }
       video.remove(function(err){
@@ -96,7 +101,7 @@ var VideoRoute = {
       if(err)
         return next(new restify.errors.InternalServerError('db error when try to find by ID'));
       if(!video)
-        return next(new restify.errors.PreconditionFailedError('no this article'));
+        return next(new restify.errors.PreconditionFailedError('no this video'));
 
       Favorite.findOne({ user : user.id, video: video._id},function(err,docs){
         if(err)

@@ -13,7 +13,7 @@ var VideoSchema   = new Schema({
 
     owner : {type: Schema.Types.ObjectId, ref:'User'},
     likeMembers : [{type: Schema.Types.ObjectId, ref:'User'}],
-    boards : [type: Schema.Types.ObjectId, ref:'Board'}],
+    boards : [{type: Schema.Types.ObjectId, ref:'Board'}],
     viewCount : Number,
     likeCount : Number,
     // scopeScore : Float,

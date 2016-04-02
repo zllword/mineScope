@@ -18,8 +18,9 @@ var BoardSchema   = new Schema({
 
     owner : {type: Schema.Types.ObjectId,ref: 'User'},
     viewCount : Number,
+    commentCount : Number,
+    comments : [{ type: Schema.Types.ObjectId, ref: 'Comment'}],
     likeCount : Number,
-
     likeMembers : [{type: Schema.Types.ObjectId, ref: 'User'}],
     scopeScore : Number,
 });

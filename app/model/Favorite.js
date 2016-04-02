@@ -12,7 +12,9 @@ var FavoriteSchema   = new Schema({
 
     music : { type: Schema.Types.ObjectId, ref: 'Music'},
 
-    video : { type : Schema.Types.ObjectId, ref: 'Video'}
+    video : { type : Schema.Types.ObjectId, ref: 'Video'},
+
+    comment : { type : Schema.Types.ObjectId, ref: 'Comment'},
 });
 
 module.exports = mongoose.model('Favorite', FavoriteSchema);
