@@ -43,6 +43,7 @@ server.get('/articles',ArticleRoute.getArticles);
 server.get('/links',LinkRoute.getLinks);
 server.get('/products',ProductRoute.getProducts);
 server.get('/boards',BoardRoute.getBoards);
+server.get('/boards/:boardID',BoardRoute.getBoardDetail);
 //authorization
 server.use(function(req, res, next){
   console.log(req.authorization);
@@ -80,6 +81,9 @@ server.del('products/:productID',ProductRoute.deleteProduct);
 //board
 server.post('/boards',BoardRoute.addBoard);
 server.put('/boards/:boardID',BoardRoute.updateBoard);
+server.put('/boards/:boardID/add',BoardRoute.addToBoard);
+server.put('/boards/:boardID/like',BoardRoute.likeBoard);
+server.put('/boards/:boardID/unlike',BoardRoute.unlikeBoard);
 server.del('boards/:boardID',BoardRoute.deleteBoard);
 
 

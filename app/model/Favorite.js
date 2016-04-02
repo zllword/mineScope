@@ -4,13 +4,15 @@ var Schema       = mongoose.Schema;
 
 var FavoriteSchema   = new Schema({
 
-    userID : {type: Schema.Types.ObjectId, ref: 'User'},
-    userName : String,
-    userAvatar : String,
+    user : {type: Schema.Types.ObjectId, ref: 'User'},
 
-    articleID : {type: Schema.Types.ObjectId, ref: 'Article' },
-    articleTitle : String,
-    articleCover : String
+    board : { type: Schema.Types.ObjectId, ref: 'Board'},
+
+    article : {type: Schema.Types.ObjectId, ref: 'Article' },
+
+    music : { type: Schema.Types.ObjectId, ref: 'Music'},
+
+    video : { type : Schema.Types.ObjectId, ref: 'Video'}
 });
 
 module.exports = mongoose.model('Favorite', FavoriteSchema);

@@ -20,6 +20,7 @@
     "express": "~4.0.0",
     "jsonwebtoken": "^5.5.4",
     "knex": "^0.10.0",
+    "lodash": "^4.7.0",
     "mongoose": "^3.6.20",
     "morgan": "^1.6.1",
     "restify": "^4.0.3",

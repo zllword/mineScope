@@ -4,17 +4,20 @@ var Schema       = mongoose.Schema;
 
 var VideoSchema   = new Schema({
     title : String,
-    cover : String,
+    poster : String,
     type : Number,
     format: String,
     storage: String,
-    content: String,
+    description: String,
     originLink : String,
-    postDate : Date,
+
     owner : {type: Schema.Types.ObjectId, ref:'User'},
+    likeMembers : [{type: Schema.Types.ObjectId, ref:'User'}],
+    boards : [type: Schema.Types.ObjectId, ref:'Board'}],
     viewCount : Number,
     likeCount : Number,
     // scopeScore : Float,
+    postDate : Date,
 });
 
 module.exports = mongoose.model('Video', VideoSchema);

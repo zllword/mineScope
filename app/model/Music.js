@@ -17,4 +17,4 @@ var MusicSchema   = new Schema({
     // scopeScore : Float,
 });
 
-module.exports = mongoose.model('Music', Musicchema);
+module.exports = mongoose.model('Music', MusicSchema);
