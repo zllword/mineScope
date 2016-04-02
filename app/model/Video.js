@@ -2,14 +2,14 @@
 var mongoose     = require('mongoose');
 var Schema       = mongoose.Schema;
 
-var ProductSchema   = new Schema({
+var VideoSchema   = new Schema({
     title : String,
     cover : String,
-    images : [String],
     type : Number,
+    format: String,
+    storage: String,
     content: String,
     originLink : String,
-    buyLink : String,
     postDate : Date,
     owner : {type: Schema.Types.ObjectId, ref:'User'},
     viewCount : Number,
@@ -17,4 +17,4 @@ var ProductSchema   = new Schema({
     // scopeScore : Float,
 });
 
-module.exports = mongoose.model('Product', ProductSchema);
+module.exports = mongoose.model('Video', VideoSchema);

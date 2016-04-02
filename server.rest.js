@@ -14,6 +14,7 @@ var UserRoute = require('./app/UserRoute');
 var ArticleRoute = require('./app/ArticleRoute');
 var ProductRoute = require('./app/ProductRoute');
 var LinkRoute = require('./app/LinkRoute');
+var BoardRoute = require('./app/BoardRoute');
 
 var server = restify.createServer({
   name: 'mineScope',
@@ -22,13 +23,18 @@ var server = restify.createServer({
 server.use(restify.acceptParser(server.acceptable));
 server.use(restify.queryParser());
 server.use(restify.bodyParser());
+server.use(restify.authorizationParser());
+
+restify.CORS.ALLOW_HEADERS.push('token');
+restify.CORS.EXPOSE_HEADERS.push('token');
+restify.CORS.origins.push('http://localhost:3001');
+restify.CORS.credentials = true;
 server.use(restify.CORS({
     origins: ['http://localhost:3001'],   // defaults to ['*']
     credentials: true,                 // defaults to false
-    headers: ['authorization-token']                 // sets expose-headers
+    headers: ['token']                 // sets expose-headers
 }));
-
-server.use(restify.authorizationParser());
+server.use(restify.fullResponse());
 
 server.post('/login', UserRoute.login);
 server.post('/register',UserRoute.register);
@@ -36,6 +42,7 @@ server.post('/register',UserRoute.register);
 server.get('/articles',ArticleRoute.getArticles);
 server.get('/links',LinkRoute.getLinks);
 server.get('/products',ProductRoute.getProducts);
+server.get('/boards',BoardRoute.getBoards);
 //authorization
 server.use(function(req, res, next){
   console.log(req.authorization);
@@ -69,6 +76,12 @@ server.put('/articles/:articleID/unlike',ArticleRoute.unlikeArticle);
 server.post('/products',ProductRoute.addProduct);
 server.put('/products/:productID',ProductRoute.updateProduct);
 server.del('products/:productID',ProductRoute.deleteProduct);
+
+//board
+server.post('/boards',BoardRoute.addBoard);
+server.put('/boards/:boardID',BoardRoute.updateBoard);
+server.del('boards/:boardID',BoardRoute.deleteBoard);
+
 
 //links
 server.get('/links',LinkRoute.getLinks);

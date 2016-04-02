@@ -4,7 +4,7 @@ var Schema       = mongoose.Schema;
 
 var CommentSchema   = new Schema({
     post: { type: Schema.Types.ObjectId },
-    type: { type: String, enum:['Article','Link','Product']},
+    type: { type: String, enum:['Article','Link','Product','Video','Music']},
     title : String,
     cover : String,
     images : [String],
