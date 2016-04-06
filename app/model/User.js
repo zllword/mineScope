@@ -9,6 +9,7 @@ var UserSchema   = new Schema({
     gender : Boolean,
     phone : String,
     age : Number,
+    avatar : String,
     lastLoginDate : Date,
 });
 

@@ -1,7 +1,7 @@
 var config = require('../config');
 var restify = require('restify');
 var Product = require('./model/Product');
-
+var graper = require('./graper');
 var ProductRoute = {
   getProducts : function(req, res, next) {
     var keyword = req.params.keyword;
@@ -16,6 +16,16 @@ var ProductRoute = {
       }
 
     });
+  },
+  grapProductFromLink : function(req, res, next) {
+    var url = req.params.url;
+    graper.getTaobao(url)
+      .then(function (product){
+        res.send(200,{data : product})
+      })
+      .catch(function(err){
+        return next(new restify.errors.InvalidArgumentError(err));
+      });
   },
   addProduct : function(req, res, next) {
     console.log(req.params)

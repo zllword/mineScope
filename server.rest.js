@@ -67,6 +67,7 @@ server.use(function(req, res, next){
   }
 });
 //------------need auth----------------//
+server.post('/currentuser',UserRoute.current);
 server.get('/users',UserRoute.users);
 
 //articles
@@ -87,6 +88,7 @@ server.put('/videos/:videoID/unlike',VideoRoute.unlikeVideo);
 server.post('/products',ProductRoute.addProduct);
 server.put('/products/:productID',ProductRoute.updateProduct);
 server.del('products/:productID',ProductRoute.deleteProduct);
+server.post('/grapproduct',ProductRoute.grapProductFromLink);
 
 //board
 server.post('/boards',BoardRoute.addBoard);

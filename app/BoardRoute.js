@@ -123,10 +123,14 @@ var BoardRoute = {
     var keyword = req.params.keyword;
     var limit = req.params.limit || 10;
     var skip = req.params.skip || 0;
-    Board.find({},function(err,docs){
-      console.log(docs);
-      res.send(200,{data : docs});
-    });
+    Board.find()
+      .populate('owner')
+      .populate('likeMembers')
+      .sort({'postDate':-1})
+      .exec(function(err,docs){
+        console.log(docs);
+        res.send(200,{data : docs});
+      });
   },
   // 创建看板
   addBoard : function(req, res, next) {
@@ -150,7 +154,7 @@ var BoardRoute = {
       if(err) {
         return next(new restify.errors.InternalServerError('db error when try to save article'));
       }
-      res.send(200,{success : true});
+      res.send(200,{ data : board.toJSON() });
     });
   },
   //更新看板

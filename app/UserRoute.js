@@ -6,6 +6,9 @@ var crypto = require('crypto');
 var jwt    = require('jsonwebtoken');
 
 var UserRoute = {
+  current : function (req, res, next) {
+    res.send(200, req.decoded );
+  },
   register : function (req, res, next) {
     console.log(req.params)
     if (!req.params.email || !req.params.password) {
@@ -67,7 +70,8 @@ var UserRoute = {
         });
         res.send(200,{
           success : true,
-          token : token
+          token : token,
+          user : user.toJSON()
         });
       }else {
         return next(new restify.errors.UnauthorizedError('wrong password'));
@@ -76,7 +80,7 @@ var UserRoute = {
   },
 
   logout : function (req, res, next) {
-    
+
   },
   users : function (req, res, next) {
     console.log(req.decoded);
